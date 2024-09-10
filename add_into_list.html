@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add Into List</title>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+</head>
+<body>
+
+  <h2 id="title">Add Into List</h2>
+  <button id="btn">Add</button>
+  <ul id="list"></ul>
+
+  <script>
+    let num = 1
+    $(document).ready(function() {
+      $("#btn").click(function(){
+        $("#list").append(`<li>Item ${num}</li>`);
+        num++
+      })
+    })
+
+  </script>
+
+
+</body>
+</html>

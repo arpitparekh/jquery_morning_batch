@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Display</title>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+</head>
+<body>
+
+  <h2>Get Form Data</h2>
+
+  <form id="form" action="#">
+    <label for="fname">First name:</label><br>
+    <input type="text" id="fname" name="fname"><br>
+    <label for="lname">Last name:</label><br>
+    <input type="text" id="lname" name="lname"><br><br>
+    <button type="submit" id="btn">Submit</button>
+    <h2 id="result"></h2>
+  </form>
+
+  <script>
+
+    // arrow function is a short syntax of function with arrow operator
+
+    $(document).ready(()=>{    // arrow function
+      $("button").click((e)=>{
+        e.preventDefault()     // will stop the form from submitting
+        $("#result").html(`firstName :  ${ $("#fname").val() } LastName : ${ $("#lname").val() } `)
+      })
+    })
+
+  </script>
+
+
+</body>
+</html>
