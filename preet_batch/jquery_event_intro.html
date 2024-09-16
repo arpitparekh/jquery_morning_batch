@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Introduction</title>
+
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      #div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 20px;
+      }
+    </style>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  </head>
+  <body>
+    <div id="div">
+      <img
+        src="https://picsum.photos/200/300"
+        id="img"
+        height="300px"
+        width="200px"
+      /><br />
+
+      <form id="form">
+        <input id="myInput" type="text" />
+        <button id="submit">Submit</button>
+      </form>
+
+      <button id="btn">Click me</button>
+    </div>
+
+    <script>
+      $(document).ready(() => {
+        $('#btn').dblclick(() => {
+          console.log('Click Happend');
+        });
+
+        $('#img').mouseenter(() => {
+          console.log('Mouse Enter');
+        });
+
+        $('#img').mouseleave(() => {
+          console.log('Mouse Leave');
+        });
+
+        $('#img').mousemove(() => {
+          console.log('Mouse Move');
+        });
+
+        $('#myInput').focus(() => {
+          console.log('Focus');
+        });
+
+        $('#myInput').blur(() => {
+          console.log('Blur');
+        });
+
+        $('#myInput').keypress((e) => {
+          console.log(e.key);
+        });
+
+        $('#form').submit((e)=>{
+          e.preventDefault();
+          console.log('Form Submitted');
+        })
+
+        $(document).scroll(()=>{
+          console.log("Scrolling");
+        })
+
+        $(window).resize(()=>{
+          console.log("resize event");
+        })
+
+      });
+    </script>
+  </body>
+</html>
