@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Traversing</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  </head>
+  <body>
+    <div style="padding: 20px; background-color: lightblue">
+      <p id="p1">Hello Traversing</p>
+    </div>
+    <button id="btn">Click me</button>
+
+    <main>
+      <div id="sib1" style="padding: 10px; background-color: lightslategray">
+        <div style="padding: 10px; background-color: lightseagreen">
+          <div style="padding: 10px; background-color: lightcoral">
+            <p id="p2" style="text-align: center">Hello Students</p>
+          </div>
+        </div>
+      </div>
+      <div id="sib2">
+
+      </div>
+      <div id="sib3">
+
+      </div>
+      <div id="sib4"></div>
+
+      </div>
+    </main>
+
+    <button id="btn2">Click me</button>
+
+    <script>
+      $(document).ready(() => {
+        console.log($('#p1').parents());
+        console.log($('#p2').parents()[1]);
+        console.log($("#p2").parentsUntil("main"))
+
+        console.log($('main').children())
+
+        console.log($("main").find("p"))
+
+        console.log($("#sib1").siblings())
+
+        console.log($("#sib1").nextAll())
+
+        console.log($("#sib1").last())
+
+        $('#btn').click(() => {
+          $('#p1').parent().css('background-color', 'lightgreen');
+        });
+
+        $('#btn2').click(() => {
+          $($('#p2').parents()[1]).css('background-color', 'black');
+        });
+      });
+
+      // Application interface
+      
+
+    </script>
+  </body>
+</html>
