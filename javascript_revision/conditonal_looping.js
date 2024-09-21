@@ -150,3 +150,15 @@ numbers.forEach((item,index,arr) => {
 })
 
 console.log("Sum is ",sum);
+
+numbers =  numbers.map((num)=> num*5)
+console.log(numbers);
+
+
+// javascript
+// html
+// css
+// jquery
+// tailwind
+// mongodb
+// react
