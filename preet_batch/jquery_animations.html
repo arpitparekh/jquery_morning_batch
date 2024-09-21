@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animation</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  </head>
+  <style>
+    * {
+      font-family: system-ui;
+    }
+    h1 {
+      background-color: lightsalmon;
+      position: relative;
+    }
+  </style>
+  <body>
+    <h1 id="title">Welcome Preet Hide and Show</h1>
+    <h1 id="title2">Welcome Preet fade in fade out</h1>
+    <h1 id="title3">Welcome Preet slide up and down</h1>
+    <h1 id="title4">Welcome Preet Animate</h1>
+    <h1 id="title5">Welcome Preet to the animation chaining</h1>
+    <button id="btn">Click me</button>
+    <button id="btn2">Stop me</button>
+
+    <script>
+      $(document).ready(() => {
+        $('#title').hide();
+        $('#title').show(3000,()=>{
+          // alert('Dikha raha he budbuk')
+        });
+        $('#title2').fadeOut();
+        $('#title2').fadeIn(5000,()=>{
+          // alert('Dikha raha he budbuk')
+        });
+        $('#title3').slideUp();
+        $('#title3').slideDown(6000,()=>{
+          //alert('Dikha raha he budbuk')
+        });
+
+        $('#btn').click(() => {
+          $('#title4').animate({ opacity: 0 }, 1000, () => {
+            // alert('Gayab ho gaya');
+          });
+        });
+
+        $('#btn2').click(() => {
+          $('#title4').stop();
+        });
+
+        $("#title5").fadeOut(1000).fadeIn(1000).slideUp(1000).slideDown(1000).hide(1000).show(1000).animate({left:"100px"},1000).animate({left:"0px"},1000)
+
+      });
+    </script>
+  </body>
+</html>

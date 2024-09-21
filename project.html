@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product CRUD with Drag and Drop</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body{
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            height: 100vh;
+            background: linear-gradient(120deg, #f0f4f8, #d9e8ec);
+        }
+
+        main{
+            width: 100%;
+            display: flex;
+        }
+
+        #add{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50%;
+            height: 100vh;
+            background-color: #f4a261;
+            padding: 20px;
+        }
+
+        #display{
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 50%;
+            height: 100vh;
+            background-color: #e9c46a;
+            overflow-y: auto;
+        }
+
+        form{
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        form label{
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        form input, form textarea{
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        form button{
+            padding: 10px 20px;
+            background-color: #2a9d8f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        form button:hover{
+            background-color: #264653;
+        }
+
+        #display div{
+            display: flex;
+            justify-content: space-between;
+            background-color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #display h2, #display h3, #display p{
+            margin: 5px 0;
+        }
+
+        button.update, button.delete{
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button.update{
+            background-color: #f4a261;
+            color: white;
+        }
+
+        button.delete{
+            background-color: #e76f51;
+            color: white;
+        }
+
+        button.update:hover{
+            background-color: #e76f51;
+        }
+
+        button.delete:hover{
+            background-color: #d62828;
+        }
+
+    </style>
+</head>
+<body>
+
+    <main>
+        <div id="add">
+        </div>
+
+        <div id="display">
+        </div>
+    </main>
+
+    <script>
+        let add = document.getElementById("add");
+        let display = document.getElementById("display");
+
+        let count = 1
+        let b = false
+        let id = "";
+        let draggedItem = null;
+
+        deletedProducts = []
+
+        add.append(createForm());
+
+        function createForm() {
+            let form = document.createElement("form");
+            form.id = "form";
+            form.style.display = "flex";
+            form.style.flexDirection = "column";
+            form.style.gap = "10px";
+            form.style.alignItems = "center";
+
+            let name = document.createElement("label");
+            name.innerHTML = "Name: ";
+            let nameInput = document.createElement("input");
+            nameInput.type = "text";
+            nameInput.id = "name";
+            nameInput.required = true;
+            nameInput.placeholder = "Enter Name";
+
+            let quantity = document.createElement("label");
+            quantity.innerHTML = "Quantity: ";
+            let quantityInput = document.createElement("input");
+            quantityInput.type = "number";
+            quantityInput.id = "quantity";
+            quantity.required = true;
+            quantityInput.placeholder = "Enter Quantity";
+
+            let price = document.createElement("label");
+            price.innerHTML = "Price: ";
+            let priceInput = document.createElement("input");
+            priceInput.type = "number";
+            priceInput.id = "price";
+            price.required = true;
+            priceInput.placeholder = "Enter Price";
+
+            let description = document.createElement("label");
+            description.innerHTML = "Description: ";
+            let descriptionInput = document.createElement("textarea");
+            descriptionInput.style.resize = "none";
+            descriptionInput.style.height = "100px";
+            descriptionInput.required = true;
+            descriptionInput.type = "text";
+            descriptionInput.id = "description";
+            descriptionInput.placeholder = "Enter Description";
+
+            let button = document.createElement("button");
+            button.type = "submit";
+            button.innerHTML = "Submit";
+            button.id = "submit";
+
+            form.addEventListener("submit", (e) => {
+                e.preventDefault();
+                let name = document.getElementById("name").value;
+                let quantity = document.getElementById("quantity").value;
+                let price = document.getElementById("price").value;
+                let description = document.getElementById("description").value;
+
+                if(b){
+                    // update
+                    document.getElementById(id).children[0].children[0].innerHTML = name;
+                    document.getElementById(id).children[0].children[1].innerHTML = quantity;
+                    document.getElementById(id).children[0].children[2].innerHTML = price;
+                    document.getElementById(id).children[0].children[3].innerHTML = description;
+
+                    button.innerHTML = "Submit";
+                    id = "";
+                    b = false;
+                    form.reset();
+                } else {
+                    // add
+                    createListItems(name, quantity, price, description);
+                    form.reset();
+                }
+
+
+            });
+
+            form.append(name, nameInput, quantity, quantityInput, price, priceInput, description, descriptionInput, button);
+            return form;
+        }
+
+        function createListItems(name, quantity, price, description) {
+            let div = document.createElement("div");
+            div.style.display = "flex";
+            div.style.justifyContent = "space-between";
+            div.id = `div${count}`;
+            div.draggable = true;  // Enable drag
+            count++;
+
+            let subDiv1 = document.createElement("div");
+            subDiv1.style.display = "flex";
+            subDiv1.style.flexDirection = "column";
+
+            let name1 = document.createElement("h2");
+            name1.innerHTML = name;
+            let quantity1 = document.createElement("h3");
+            quantity1.innerHTML = quantity;
+            let price1 = document.createElement("h3");
+            price1.innerHTML = price;
+            let description1 = document.createElement("p");
+            description1.innerHTML = description;
+
+            subDiv1.append(name1, quantity1, price1, description1);
+            div.append(subDiv1);
+
+            let subDiv2 = document.createElement("div");
+            subDiv2.style.display = "flex";
+            subDiv2.style.gap = "10px";
+
+            let updateBtn = document.createElement("button");
+            updateBtn.innerHTML = "Update";
+            updateBtn.classList.add("update");
+            updateBtn.onclick = function() {
+                document.getElementById("name").value = name1.innerHTML;
+                document.getElementById("quantity").value = quantity1.innerHTML;
+                document.getElementById("price").value = price1.innerHTML;
+                document.getElementById("description").value = description1.innerHTML;
+                id = div.id;
+                b = true;
+                document.getElementById("submit").innerHTML = "Update";
+            }
+
+            let deleteBtn = document.createElement("button");
+            deleteBtn.classList.add("delete");
+            deleteBtn.innerHTML = "Delete";
+            deleteBtn.onclick = function() {
+                div.remove();
+                document.createElement("form").reset();
+
+                console.log(deletedProducts);
+
+            }
+
+            subDiv2.append(updateBtn, deleteBtn);
+            div.append(subDiv2);
+
+            // Add event listeners for drag-and-drop
+            div.addEventListener('dragstart', function(e) {
+                draggedItem = div;
+                setTimeout(function() {
+                    div.style.display = 'none';
+                }, 0);
+            });
+
+            div.addEventListener('dragend', function(e) {
+                setTimeout(function() {
+                    draggedItem.style.display = 'flex';
+                    draggedItem = null;
+                }, 0);
+            });
+
+            div.addEventListener('dragover', function(e) {
+                e.preventDefault();
+            });
+
+            div.addEventListener('drop', function(e) {
+                e.preventDefault();
+                if (draggedItem !== div) {
+                    display.insertBefore(draggedItem, div);
+                }
+            });
+
+            display.append(div);
+        }
+    </script>
+
+</body>
+</html>
